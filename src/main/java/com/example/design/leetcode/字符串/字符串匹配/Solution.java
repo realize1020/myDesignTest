@@ -1,7 +1,11 @@
 package com.example.design.leetcode.字符串.字符串匹配;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Solution {
     public static void main(String[] args) {
@@ -17,11 +21,13 @@ public class Solution {
 //        System.out.println(match("abcabcabc", "")); // true
 //        System.out.println(match("", "a")); // false
 
-//        System.out.println(horspoolSearch("abcabcabcd", "bc"));
+        System.out.println(BM_Match2("abcdefg", "cde"));
 //
 //        System.out.println(horspoolSearch2("abcabcabcd", "bc"));
 
-        System.out.println(match2("hello", "lo"));
+        //System.out.println(match2("hello", "lo"));
+
+        //int[] abcdebcds = createShiftTable("abcdebcd");
     }
 
 
@@ -75,7 +81,7 @@ public class Solution {
                 i++;
                 j++;
             }else {
-                i = i - j + 1; // 回退文本串的索引
+                i = i - j + 1; // 回退文本串的索引，回退到上一次匹配的下一个位置
                 j = 0;// 重置模式串的索引
             }
         }
@@ -137,7 +143,7 @@ public class Solution {
     }
 
     /**
-     * ai
+     * ai的Boyer-Moore算法
      * @param text
      * @param pattern
      * @return
@@ -181,13 +187,81 @@ public class Solution {
 
         // 遍历模式串（除了最后一个字符），记录每个字符在模式串中的最后出现位置
         for (int i = 0; i < n - 1; i++) {
-            shiftTable[(int) pattern.charAt(i)] = n - 1 - i; // 记录字符在模式串中的最后出现位置
+            shiftTable[(int) pattern.charAt(i)] = n - 1 - i; // 记录字符在模式串中的最后出现位置.下标
         }
 
         return shiftTable;
     }
 
 
+
+
+
+    private static int BM_Match(String s,String pattern){
+        int i=pattern.length()-1;
+        int index=pattern.length()-1;
+        while(i<s.length()){//我这个写法，i不能是i<=s.length()-pattern.length()，因为这个i是从后往前的回退。不是别人的那种charAt(s.length-i)
+            while(index>=0&&pattern.charAt(index)==s.charAt(i)){
+                i--;
+                index--;
+            }
+            if(index==-1){
+                return i+1;
+            }else{
+                i = i + moveDistance(s.charAt(i), pattern);
+                index=pattern.length()-1;
+            }
+
+        }
+        return -1;
+    }
+
+    /**
+     * 这个可以优化一下，因为每次都需要char[] charArray = pattern.toCharArray();然后for循环寻找，效率低
+     * 可以提前构造好这个字符移动距离数组
+     * @param c
+     * @param pattern
+     * @return
+     */
+    private static int moveDistance(char c, String pattern) {
+        char[] charArray = pattern.toCharArray();
+        for(int i=charArray.length-1;i>=0;i--){
+            if(charArray[i]==c){
+                return charArray.length-1-i;
+            }
+        }
+        return charArray.length;
+    }
+
+    private static int BM_Match2(String s,String pattern){
+        int i=pattern.length()-1;
+        int index=pattern.length()-1;
+        List<Integer> moveDist = moveDistance2(pattern);
+        while(i<s.length()){//我这个写法，i不能是i<=s.length()-pattern.length()，因为这个i是从后往前的回退。不是别人的那种charAt(s.length-i)
+            while(index>=0&&pattern.charAt(index)==s.charAt(i)){
+                i--;
+                index--;
+            }
+            if(index==-1){
+                return i+1;
+            }else{
+                i = i + (moveDist.contains(Integer.valueOf(s.charAt(i)))?moveDist.indexOf(Integer.valueOf(s.charAt(i))):pattern.length());
+                index=pattern.length()-1;
+            }
+
+        }
+        return -1;
+    }
+
+    private static List<Integer> moveDistance2(String pattern){
+        int[] moveDistance = new int[pattern.length()];
+        Arrays.fill(moveDistance,pattern.length());
+        for(int i=0;i<moveDistance.length;i++){
+            moveDistance[moveDistance.length-1-i]=pattern.charAt(i);
+        }
+        
+        return Arrays.stream(moveDistance).boxed().collect(Collectors.toList());
+    }
 
 
     private static HashMap<Integer,Integer> createShiftTable2(String pattern){
