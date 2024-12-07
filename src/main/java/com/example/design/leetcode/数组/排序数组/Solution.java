@@ -164,7 +164,7 @@ public class Solution {
     }
 
     private static int partition(int[] arr, int start, int end) {
-        int pivot = arr[start];
+        int pivot = arr[start+(end-start)/2];
         while(start<end){
             while(start<end && arr[end]>=pivot){
                 end--;
@@ -216,13 +216,13 @@ public class Solution {
 
 
     public static int[] sortArray(int[] nums) {
-        quickSort2(nums);
+        quickSort(nums);
         return nums;
     }
 
 
     public static void main(String[] args) {
-        int[] arr = {6,2,1,3,5,4};
+        int[] arr = {6,2,1,3};
         sortArray(arr);
         System.out.println(Arrays.toString(arr));
     }

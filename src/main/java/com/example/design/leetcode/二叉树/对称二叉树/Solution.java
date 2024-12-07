@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class Solution {
 
-    /**
+    /**失败
      * 感觉使用中序遍历的序列可以判断出来
      *
      * @param root
@@ -105,7 +105,7 @@ public class Solution {
     }
 
 
-    /**
+    /**失败
      * 两个指针从根节点开始遍历，一个左移的同时另一个右移
      * @param root
      * @return

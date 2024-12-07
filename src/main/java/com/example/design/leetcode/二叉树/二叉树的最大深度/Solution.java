@@ -54,6 +54,7 @@ public class Solution {
 
     /**
      * 广度优先搜索(只能用队列，先进先出，不能用栈，因为需要在每一层的左右节点遍历结束时再层数+1，不然的话栈结构会先弹出下一层的数据，最后回溯的时候，会错乱
+     *
      * @param root
      * @return
      */
@@ -83,7 +84,7 @@ public class Solution {
     }
 
     /**
-     * 不能用这个栈结构模仿上面的队列实现方式
+     * 不能用这个栈结构模仿上面的队列实现方式，有错误
      * @param root
      * @return
      */
@@ -122,7 +123,7 @@ public class Solution {
     public static void main(String[] args) {
         TreeNode treeNode =new TreeNode(3,new TreeNode(9,null,null),new TreeNode(20,new TreeNode(15,null,null),new TreeNode(7,null,null)));
         TreeNode treeNode2 =new TreeNode(1,new TreeNode(2,new TreeNode(4,null,null),null),new TreeNode(3,null,new TreeNode(5,null,null)));
-        int result = maxDepth4(treeNode2);
+        int result = maxDepth3(treeNode2);
         System.out.println(result);
     }
 }

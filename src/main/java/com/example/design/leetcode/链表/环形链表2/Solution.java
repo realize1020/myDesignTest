@@ -1,8 +1,7 @@
-package com.example.design.leetcode.环形链表2;
+package com.example.design.leetcode.链表.环形链表2;
 
 import com.example.design.leetcode.ListNode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Solution {

@@ -50,24 +50,24 @@ public class Solution {
         }
         int val = pre[0];
         TreeNode treeNode=new TreeNode(val);
-//        for(int i=0;i<pre.length;i++){
-//            if(pre[0]==ins[i]){
-//                int[] pre2 = Arrays.copyOfRange(pre, 1, i+1);
-//                int[] ins2 = Arrays.copyOfRange(ins, 0, i);
-//                treeNode.left=createTreeNode(pre2,ins2);
-//                int[] pre3 = Arrays.copyOfRange(pre, i+1, pre.length);
-//                int[] ins4 = Arrays.copyOfRange(ins, i+1, ins.length);
-//                treeNode.right=createTreeNode(pre3,ins4);
-//            }
-//        }
+        for(int i=0;i<pre.length;i++){
+            if(pre[0]==ins[i]){
+                int[] pre2 = Arrays.copyOfRange(pre, 1, i+1);
+                int[] ins2 = Arrays.copyOfRange(ins, 0, i);
+                treeNode.left=createTreeNode(pre2,ins2);
+                int[] pre3 = Arrays.copyOfRange(pre, i+1, pre.length);
+                int[] ins4 = Arrays.copyOfRange(ins, i+1, ins.length);
+                treeNode.right=createTreeNode(pre3,ins4);
+            }
+        }
 
         //下面也可以。
-        int[] pre2 = Arrays.copyOfRange(pre, 1, findIndex(ins, val)+1);
-        int[] ins2 = Arrays.copyOfRange(ins, 0, findIndex(ins, val));
-        treeNode.left=createTreeNode(pre2,ins2);
-        int[] pre3 = Arrays.copyOfRange(pre, findIndex(ins, val)+1, pre.length);
-        int[] ins4 = Arrays.copyOfRange(ins, findIndex(ins, val)+1, ins.length);
-        treeNode.right=createTreeNode(pre3,ins4);
+//        int[] pre2 = Arrays.copyOfRange(pre, 1, findIndex(ins, val)+1);
+//        int[] ins2 = Arrays.copyOfRange(ins, 0, findIndex(ins, val));
+//        treeNode.left=createTreeNode(pre2,ins2);
+//        int[] pre3 = Arrays.copyOfRange(pre, findIndex(ins, val)+1, pre.length);
+//        int[] ins4 = Arrays.copyOfRange(ins, findIndex(ins, val)+1, ins.length);
+//        treeNode.right=createTreeNode(pre3,ins4);
 
         return treeNode;
     }
