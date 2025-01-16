@@ -1,0 +1,253 @@
+package com.example.design.multiThread.皮带秤煤炭;
+
+import lombok.extern.slf4j.Slf4j;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Slf4j
+public class Solution3 {
+    private static boolean start=false;
+    private static volatile boolean end=false;
+    private static String startValue;
+    private static volatile String endValue;
+    private static LocalDateTime startTime;
+    private static LocalDateTime endTime;
+    private static Random random =new Random();
+
+    private static ExecutorService executorService = Executors.newFixedThreadPool(5);
+
+    public static class MyDumpThread extends Thread{
+
+        @Override
+        public void run() {
+                while(true){
+                    if(end){
+                        end=false;
+                        endValue="40";//又大于30了
+                        log.info("endValue又大于30了");
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            return;
+                        }
+                        log.info("继续........");
+                        end=true;
+                        break;
+                    }
+                    currentThread().interrupt();
+                }
+        }
+    }
+
+    public static void main(String[] args) {
+        while (true){
+            MyDumpThread dumpThread =new MyDumpThread();
+            executorService.submit(dumpThread);
+
+            List<List<LivePoint>> list = getLivePoints();
+
+            for(List<LivePoint> lvList: list){
+                try {
+                    System.out.println(lvList);
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                for(LivePoint livePoint : lvList){
+                    float single = livePoint.getSingle();
+                    String name = livePoint.getName();
+                    {
+                        if(name.equals("W3.FW.BYAI19O408")){
+                            if(!start&&single>30){
+                                start=true;
+                                startTime=LocalDateTime.now();
+                                log.info("startTime:{}，此时start=true、end=false,name:{},single:{}",startTime.format(DateTimeFormatter.ofPattern("YYYY-mm-dd HH:mm:ss")),name,single);
+                            }else if(!end&&single<30){
+                                if(start){
+                                    end=true;
+                                    endTime=LocalDateTime.now();
+                                    log.info("endTime:{}，此时start=true、end=true,name:{},single:{}",endTime.format(DateTimeFormatter.ofPattern("YYYY-mm-dd HH:mm:ss")),name,single);
+                                }
+                            }else if(start&&end&&single>30){
+                                end=false;
+                                log.info("endTime:{}，此时end再次变为false,name:{},single:{}",endTime.format(DateTimeFormatter.ofPattern("YYYY-mm-dd HH:mm:ss")),name,single);
+                            }
+
+                        }
+                        if(start&&!end&&name.equals("W3.FW.AM19PH0102")){
+                            startValue= String.valueOf(single);
+                        }else if(end&&name.equals("W3.FW.AM19PH0102")){
+                                executorService.submit(()->{
+                                    long startTimeStamp = System.currentTimeMillis();
+                                    long timeout = 1000;
+                                    while (true) {
+                                        while(System.currentTimeMillis() - startTimeStamp < timeout){
+                                            try {
+                                                log.info("休眠中,等待成为终止状态........");
+                                                Thread.sleep(100); // 短暂休眠，避免过度频繁检查占用过多资源，可调整间隔时间
+                                            } catch (InterruptedException e) {
+                                                Thread.currentThread().interrupt();
+                                                log.error("线程被中断");
+                                                return;
+                                            }
+                                        }
+                                        if(end){
+                                            endValue=String.valueOf(single);
+                                            log.info("endValue:{}、开始构建皮带秤数据............",endValue);
+                                            buildBeltFactoryData(startValue,endValue,startTime,endTime);
+                                            break;
+                                        }else{
+                                            log.info("endValue:{}、继续延时构建............",endValue);
+                                            startTimeStamp = System.currentTimeMillis();
+                                        }
+
+                                    }
+
+                                });
+                            try {
+                                Thread.sleep(15000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            //Thread.currentThread().stop();
+                        }
+
+                    }
+
+                }
+            }
+//        try {
+//            Thread.currentThread().join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+            start=false;
+            end=false;
+        }
+
+
+    }
+    private static void buildBeltFactoryData(String startValue, String endValue,LocalDateTime startTime,LocalDateTime endTime) {
+        BeltScaleData beltScaleData = getBeltScaleData(startValue, endValue,startTime,endTime);
+        beltScaleData.setJizu(null);
+        beltScaleData.setBanzhi(null);
+        beltScaleData.setJlhqyt("4");
+        System.out.println(beltScaleData.toString());
+        log.info("上湾入厂成功！：{}",beltScaleData.toString());
+
+    }
+
+    private static BeltScaleData getBeltScaleData(String startValue, String endValue,LocalDateTime startTime,LocalDateTime endTime) {
+        BeltScaleData beltScaleData =new BeltScaleData();
+        beltScaleData.setZmeng(String.valueOf(Float.parseFloat(endValue)-Float.parseFloat(startValue)));
+        beltScaleData.setPdcqishidima(startValue);
+        beltScaleData.setPdcjiezhidima(endValue);
+        beltScaleData.setZmxdocNo("GS6J"+LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"))+ random.nextInt(10));
+        beltScaleData.setSsejdw("国家能源集团内蒙古电力有限公司");
+        beltScaleData.setSsejdwid("5880");
+        beltScaleData.setSssjdw("北京国电电力有限公司上湾热电厂");
+        beltScaleData.setSssjdwid("GS6J");
+        beltScaleData.setMykuangdianmc("上湾矿");
+        beltScaleData.setZsitename("上湾煤矿");
+        beltScaleData.setZsite("10017897");
+        beltScaleData.setZname1("北京国电电力有限公司上湾热电厂");
+        beltScaleData.setMeitanlaiyuan("神东自产");
+        beltScaleData.setMeitanlaiyuanbm("M101");
+        beltScaleData.setMeizhong("烟煤");
+        beltScaleData.setMeizhongbm("82327089");
+        beltScaleData.setMyleixingbm("10");
+        beltScaleData.setVtext("国能销售集团西北能源贸易有限公司");
+        beltScaleData.setVkorg("*******");
+        beltScaleData.setSjscfs("1");
+        beltScaleData.setZbeginI(startTime.format(DateTimeFormatter.ofPattern("YYYYMMdd")));
+        beltScaleData.setZbeginT(startTime.format(DateTimeFormatter.ofPattern("HHmmss")));
+        beltScaleData.setZendI(endTime.format(DateTimeFormatter.ofPattern("YYYYMMdd")));
+        beltScaleData.setZendT(endTime.format(DateTimeFormatter.ofPattern("YYYYMMdd")));
+        beltScaleData.setJlhqmc("1号电子皮带秤");
+        beltScaleData.setJlhqmcid("IH-001");
+        beltScaleData.setJiliangdanwei("TO");
+        beltScaleData.setSjtsdanwei("北京国电电力有限公司上湾热电厂");
+        beltScaleData.setSjyxt("上湾热电厂煤炭数据上传系统");
+        beltScaleData.setXtscjlI(LocalDate.now().format(DateTimeFormatter.ofPattern("YYYYMMdd")));
+        beltScaleData.setXtscjlT(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HHmmss")));
+        return beltScaleData;
+    }
+
+    private static List<List<LivePoint>> getLivePoints() {
+        LivePoint livePoint1 =new LivePoint("W3.FW.BYAI19O408",10);
+        LivePoint livePoint2 =new LivePoint("W3.FW.BYAI19O408",15);
+        LivePoint livePoint3 =new LivePoint("W3.FW.BYAI19O408",20);
+        LivePoint livePoint4 =new LivePoint("W3.FW.BYAI19O408",30);
+        LivePoint livePoint5 =new LivePoint("W3.FW.BYAI19O408",35);
+        LivePoint livePoint6 =new LivePoint("W3.FW.BYAI19O408",20);
+        LivePoint livePoint7 =new LivePoint("W3.FW.BYAI19O408",20);
+        LivePoint livePoint8 =new LivePoint("W3.FW.BYAI19O408",10);
+        LivePoint livePoint9 =new LivePoint("W3.FW.BYAI19O408",10);
+        LivePoint livePoint10 =new LivePoint("W3.FW.BYAI19O408",10);
+
+        LivePoint livePoint11 =new LivePoint("W3.FW.AM19PH0102",10);
+        LivePoint livePoint12 =new LivePoint("W3.FW.AM19PH0102",15);
+        LivePoint livePoint13 =new LivePoint("W3.FW.AM19PH0102",20);
+        LivePoint livePoint14 =new LivePoint("W3.FW.AM19PH0102",30);
+        LivePoint livePoint15 =new LivePoint("W3.FW.AM19PH0102",35);
+        LivePoint livePoint16 =new LivePoint("W3.FW.AM19PH0102",20);
+        LivePoint livePoint17 =new LivePoint("W3.FW.AM19PH0102",20);
+        LivePoint livePoint18 =new LivePoint("W3.FW.AM19PH0102",10);
+        LivePoint livePoint19 =new LivePoint("W3.FW.AM19PH0102",10);
+        LivePoint livePoint20 =new LivePoint("W3.FW.AM19PH0102",10);
+
+        List<LivePoint> lvList =new ArrayList<>();
+        List<LivePoint> lvList2 =new ArrayList<>();
+        List<LivePoint> lvList3 =new ArrayList<>();
+        List<LivePoint> lvList4 =new ArrayList<>();
+        List<LivePoint> lvList5 =new ArrayList<>();
+        List<LivePoint> lvList6 =new ArrayList<>();
+        List<LivePoint> lvList7 =new ArrayList<>();
+        List<LivePoint> lvList8 =new ArrayList<>();
+        List<LivePoint> lvList9 =new ArrayList<>();
+        List<LivePoint> lvList10 =new ArrayList<>();
+        lvList.add(livePoint1);
+        lvList.add(livePoint11);
+        lvList2.add(livePoint2);
+        lvList2.add(livePoint12);
+        lvList3.add(livePoint3);
+        lvList3.add(livePoint13);
+        lvList4.add(livePoint4);
+        lvList4.add(livePoint14);
+        lvList5.add(livePoint5);
+        lvList5.add(livePoint15);
+        lvList6.add(livePoint6);
+        lvList6.add(livePoint16);
+        lvList7.add(livePoint7);
+        lvList7.add(livePoint17);
+        lvList8.add(livePoint8);
+        lvList8.add(livePoint18);
+        lvList9.add(livePoint9);
+        lvList9.add(livePoint19);
+        lvList10.add(livePoint10);
+        lvList10.add(livePoint20);
+
+        ArrayList<List<LivePoint>> livePointList =new ArrayList<>();
+        livePointList.add(lvList);
+        livePointList.add(lvList2);
+        livePointList.add(lvList3);
+        livePointList.add(lvList4);
+        livePointList.add(lvList5);
+        livePointList.add(lvList6);
+        livePointList.add(lvList7);
+        livePointList.add(lvList8);
+        livePointList.add(lvList9);
+        livePointList.add(lvList10);
+        return livePointList;
+    }
+}
