@@ -1,7 +1,11 @@
 package com.example.design.test;
 
+import com.example.design.Aggregation.Circle;
 import com.example.design.内部类.OuterClass;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,10 +59,15 @@ public class Test {
 //        Character one = findOne(s, t);
 //        System.out.println(one);
 
-        findOne2(s, t);
-
-
-
+        //findOne2(s, t);
+        List<Circle> circles =new ArrayList<>();
+        circles.add(new Circle());
+        circles.add(new Circle());
+        circles.add(new Circle());
+        circles.add(new Circle());
+        for(Circle circle: circles){
+            System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "0" + (circles.indexOf(circle) + 1));
+        }
 
     }
 

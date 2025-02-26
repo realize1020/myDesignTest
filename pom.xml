@@ -15,6 +15,10 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>8</java.version>
+        <dl4j-master.version>1.0.0-M2.1</dl4j-master.version>
+        <!-- Change the nd4j.backend property to nd4j-cuda-X-platform to use CUDA GPUs -->
+        <!-- <nd4j.backend>nd4j-cuda-10.2-platform</nd4j.backend> -->
+        <nd4j.backend>nd4j-native</nd4j.backend>
     </properties>
     <dependencies>
         <dependency>
@@ -83,6 +87,16 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>31.1-jre</version> <!-- 请替换为实际需要的版本号 -->
+        </dependency>
+        <dependency>
+            <groupId>org.nd4j</groupId>
+            <artifactId>${nd4j.backend}</artifactId>
+            <version>${dl4j-master.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>deeplearning4j-core</artifactId>
+            <version>${dl4j-master.version}</version>
         </dependency>
     </dependencies>
 
