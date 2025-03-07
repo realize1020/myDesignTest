@@ -51,15 +51,15 @@ public class Solution {
 
 
         listNode1.next=listNode2;
-        listNode2.next=listNode3;
-        listNode3.next=listNode4;
+        //listNode2.next=listNode3;
+        //listNode3.next=listNode4;
 
         listNode5.next=listNode6;
         listNode6.next=listNode7;
         listNode7.next=listNode8;
-        listNode8.next=listNode9;
-        listNode9.next=listNode10;
-        listNode10.next=listNode11;
+        //listNode8.next=listNode9;
+        //listNode9.next=listNode10;
+        //listNode10.next=listNode11;
 
 
 
@@ -107,7 +107,7 @@ public class Solution {
         }
         //最后不要忘了可能进位还有1
         if(carry!=0){
-            longList.next=new ListNode(carry);//longList为null，无法
+            //longList.next=new ListNode(carry);//longList为null，无法
             next.next=new ListNode(carry);
 
         }

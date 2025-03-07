@@ -37,7 +37,7 @@ public class Solution {
         while(head!=null){
             next = head.next;
             head.next=pre;
-            head.last=next;
+            head.last=next;//比单链表多了这行
             pre=head;
             head=next;
         }

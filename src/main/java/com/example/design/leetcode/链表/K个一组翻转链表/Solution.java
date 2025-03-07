@@ -31,9 +31,39 @@ public class Solution {
         listNode4.next=listNode5;
 
 
-        ListNode head = reverseKGroup4(listNode1, 2);
-
+        //ListNode head = reverseKGroup4(listNode1, 2);
+        ListNode head = reverseKGroupReplica(listNode1,2);
         head.printList(head);
+    }
+
+    /**
+     * 2025年3月3日，手写一遍。1、判断head，2、找到移动k为之后的结点。一定要返回要反转结点的下一个结点。3、从开始节点到第二步返回的结点进行反转。4、原始的头节点指向下一次递归
+     * @param head
+     * @param k
+     * @return
+     */
+    public static ListNode reverseKGroupReplica(ListNode head, int k){
+        int count = k;
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode current=head;
+        while(k>0){
+            k--;
+            current=current.next;
+        }
+        //反转这个范围的值
+        ListNode originHead=head;
+        ListNode pre=null;
+        ListNode next=null;
+        while(head!=current){
+            next = head.next;
+            head.next=pre;
+            pre=head;
+            head=next;
+        }
+        originHead.next=reverseKGroupReplica(current,count);
+        return pre;
     }
 
     /** 递归法

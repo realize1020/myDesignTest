@@ -36,7 +36,7 @@ public class Solution {
      * @param nums
      * @return
      */
-    public static int maxSubArray(int[] nums) {
+    public static int maxSubArray(int[] nums) {//这个代码现在是对的，就是时间和空间复杂度有点高
         int[] max = new int[nums.length];
         int maxValue =nums[0];
         max[0]=maxValue;

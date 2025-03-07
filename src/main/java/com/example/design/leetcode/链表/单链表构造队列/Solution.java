@@ -2,6 +2,9 @@ package com.example.design.leetcode.链表.单链表构造队列;
 
 import com.example.design.leetcode.ListNode;
 
+/**
+ * 单链表构造队列，需要初始化头节点，尾结点，队列大小三个变量。
+ */
 public class Solution {
 
     //可以使用泛型来构造通用数据

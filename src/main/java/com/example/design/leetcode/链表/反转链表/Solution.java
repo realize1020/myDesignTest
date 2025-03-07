@@ -32,7 +32,7 @@ public class Solution {
         }
         ListNode current =head;
         ListNode next =head.next;
-        current.next=null; //最先翻转一次，置为null
+        current.next=null; //todo 如果不用预结点的话，使用头节点赋值给current，记得最先翻转一次，置为null
         while(next!=null){//不能用next.next;
             ListNode temp=next.next;
             next.next=current;

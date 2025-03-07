@@ -24,7 +24,7 @@ public class Solution {
     }
 
     /**
-     * 我的第一种方式，比较直接的思维方式
+     * 我的第一种方式，比较直接的思维方式。连个指针、一个指针指向原链表，一个指针指向新构造的合并链表，需要初始化一个预结点。
      * @param list1
      * @param list2
      * @return
@@ -34,9 +34,9 @@ public class Solution {
         ListNode pre=new ListNode(-1);
         ListNode cur=pre;
         while(list1!=null&&list2!=null){
-            if(list1.val<list2.val){
+            if(list1.val<list2.val){ //谁小谁连到后面
                 cur.next=list1;
-                list1=list1.next;
+                list1=list1.next; //
                 cur=cur.next;
             }else{
                 cur.next=list2;
