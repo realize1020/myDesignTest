@@ -2,7 +2,6 @@ package com.example.design.leetcode.二叉树.翻转二叉树;
 
 import com.example.design.leetcode.二叉树.BinaryTreePrinter;
 import com.example.design.leetcode.二叉树.TreeNode;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayDeque;
 import java.util.LinkedList;

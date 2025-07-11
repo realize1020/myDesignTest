@@ -140,8 +140,8 @@ public class LongAdderDemo {
 
     public static void main(String[] args) throws InterruptedException {
         LongAdderDemo demo = new LongAdderDemo();
-        //demo.testSync();
-        //demo.testAtomic();
-        //demo.testLongAdder();
+        //demo2.testSync();
+        //demo2.testAtomic();
+        //demo2.testLongAdder();
     }
 }

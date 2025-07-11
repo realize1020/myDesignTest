@@ -156,7 +156,11 @@ public class Solution {
     }
 
 
-
+    /**
+     * 生成给定字符串 s 的所有可能的字符组合，并且对每个组合进行全排列，最后将所有不重复的排列结果收集到一个列表中返回
+     * @param s
+     * @return
+     */
     public static List<String> generateAllCombinations(String s) {
         List<String> result = new ArrayList<>();
         if (s == null || s.isEmpty()) {
@@ -235,11 +239,28 @@ public class Solution {
      * @return
      */
     public static void main(String[] args) {
-        String input = "aabbcc";
+       /* String input = "aabbcc";
         List<String> combinations = generateAllCombinations(input);
         System.out.println(combinations);
-        System.out.println("有多少个？"+combinations.size());
+        System.out.println("有多少个？"+combinations.size());*/
+        //带有重复连续子序列
+        //String s = "abc";
+        String s = "aabc";
+        List<String> subs = subs(s);
+        subs.forEach(l-> System.out.println(l));
+
+
+        //去除重复连续子序列
+        String s2 = "aabc";
+        List<String> subs2 = subsNoRepeat(s);
+        subs2.forEach(l-> System.out.println(l));
+
+
+        List<String> list = permute3("abc");
+        list.forEach(l-> System.out.println(l));
     }
+
+
 
 
 //    public static void main(String[] args) {

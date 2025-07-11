@@ -15,7 +15,7 @@ public class DBPool {
     public DBPool(int initialSize) {
         if (initialSize > 0) {
             for (int i = 0; i < initialSize; i++) {
-                pool.addLast(SqlConnectImpl.fetchConnection());
+                //pool.addLast(SqlConnectImpl.fetchConnection());
             }
         }
     }
