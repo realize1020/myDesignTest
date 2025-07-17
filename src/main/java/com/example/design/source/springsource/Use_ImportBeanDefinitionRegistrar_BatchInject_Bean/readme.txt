@@ -1,0 +1,1 @@
+利用ImportBeanDefinitionRegistrar接口批量注册Bean

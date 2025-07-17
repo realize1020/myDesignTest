@@ -1,10 +1,15 @@
 package com.example.design.leetcode.四十亿整数1G内存找最大重复值;
 
 import java.io.*;
+import java.nio.file.attribute.FileAttribute;
 import java.util.*;
 import java.nio.file.*;
 
 public class FindMostFrequentNumber {
+
+
+    private static final String filPath = "E:\\BaiduNetdiskDownload\\左程云算法\\numbers.txt";
+    private static final String tempPath = "E:\\BaiduNetdiskDownload\\左程云算法\\temp";
 
     // 主函数：处理输入文件并找到出现最频繁的数字
     public static long findMostFrequent(String inputFilePath, int numBuckets) throws IOException {
@@ -54,9 +59,9 @@ public class FindMostFrequentNumber {
         // 创建临时文件列表
         List<Path> bucketFiles = new ArrayList<>();
         List<BufferedWriter> writers = new ArrayList<>();
-        
+        FileAttribute<?>[] attrs = new FileAttribute[0];
         for (int i = 0; i < numBuckets; i++) {
-            Path tempFile = Files.createTempFile("bucket_" + i + "_", ".txt");
+            Path tempFile = Files.createTempFile(Paths.get(tempPath),"bucket_" + i + "_", ".txt");
             bucketFiles.add(tempFile);
             writers.add(Files.newBufferedWriter(tempFile));
         }
@@ -96,19 +101,25 @@ public class FindMostFrequentNumber {
         return index;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        //生成测试文件
+        //generateTestFile("E:\\BaiduNetdiskDownload\\左程云算法\\numbers.txt", 400000);//40w个整数
+
+
+
         // 参数配置
-        String inputFile = "numbers.txt"; // 输入文件路径
+        String inputFile = filPath; // 输入文件路径
         int numBuckets = 400;             // 分桶数量（基于内存估算）
-        
+
         try {
             long startTime = System.currentTimeMillis();
-            
+
             // 执行查找
             long mostFrequent = findMostFrequent(inputFile, numBuckets);
-            
+
             long endTime = System.currentTimeMillis();
-            
+
             System.out.println("Most frequent number: " + mostFrequent);
             System.out.println("Execution time: " + (endTime - startTime) + " ms");
         } catch (IOException e) {
@@ -116,14 +127,14 @@ public class FindMostFrequentNumber {
             System.err.println("Error processing files: " + e.getMessage());
         }
     }
-    
+
     // 辅助方法：生成测试文件（仅用于演示）
     public static void generateTestFile(String filename, long numEntries) throws IOException {
         Random rand = new Random();
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filename))) {
             for (long i = 0; i < numEntries; i++) {
-                // 生成测试数据（90%是重复数字）
-                long number = rand.nextInt(100) < 90 ? 42 : rand.nextInt(1000000);
+                // 生成测试数据（70%是重复数字）
+                long number = rand.nextInt(100) < 70 ? 42 : rand.nextInt(1000000);
                 writer.write(String.valueOf(number));
                 writer.newLine();
             }
