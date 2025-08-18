@@ -110,7 +110,7 @@ public class FindMostFrequentNumber {
 
         // 参数配置
         String inputFile = filPath; // 输入文件路径
-        int numBuckets = 400;             // 分桶数量（基于内存估算）
+        int numBuckets = 400;             // 分桶数量（基于内存估算,）
 
         try {
             long startTime = System.currentTimeMillis();

@@ -63,5 +63,29 @@ public class GapToTime {
         BigDecimal secondMoney = unitMoney.divide(new BigDecimal(60), 6, RoundingMode.HALF_UP);
         BigDecimal lossMoney = secondMoney.multiply(new BigDecimal(betweentime).divide(BigDecimal.ONE)).setScale(6,RoundingMode.HALF_UP);
         System.out.println(lossMoney);
+
+        System.out.println("--------------------------------------------------------------");
+        LocalDate today = LocalDate.now();
+        today.getMonthValue();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(today.getYear(), today.getMonthValue()-1, 1);
+        System.out.println(today.getMonthValue()-1);//今天的月份，实际月份等于数字减一，所以要减一
+        System.out.println(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));//本月有多少天
+
+        int cycle =3;
+        int days = 0;
+        for(int k = 0; k < cycle; k++){
+            calendar.set(today.getYear(), today.getMonthValue()+k - 1, 1);
+            days+=calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }
+        System.out.println("未来"+cycle+"月有"+days+"天");
+
+        cycle =2;
+        days = 0;
+        for(int p = 0; p < cycle; p++){
+            calendar.set(today.getYear()+p, today.getMonthValue() - 1, 1);
+            days+=calendar.getActualMaximum(Calendar.DAY_OF_YEAR);
+        }
+        System.out.println("未来"+cycle+"年有"+days+"天");
     }
 }
