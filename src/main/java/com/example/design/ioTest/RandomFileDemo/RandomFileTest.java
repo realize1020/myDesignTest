@@ -1,4 +1,4 @@
-package com.example.design.ioTest;
+package com.example.design.ioTest.RandomFileDemo;
 
 import java.io.RandomAccessFile;
  
