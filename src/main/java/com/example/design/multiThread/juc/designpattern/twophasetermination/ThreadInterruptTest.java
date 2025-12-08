@@ -22,8 +22,8 @@ public class ThreadInterruptTest {
                     } catch (InterruptedException e) {
                         System.out.println("线程被中断抛出中断异常，可以执行退出逻辑");
                         e.printStackTrace();
-                        //重新标记
-                        //Thread.currentThread().interrupt();
+                        //todo 重新标记
+                        Thread.currentThread().interrupt();
                     }finally {
 
                         // 关闭资源
