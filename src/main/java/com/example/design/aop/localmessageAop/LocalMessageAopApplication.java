@@ -1,15 +1,13 @@
 package com.example.design.aop.localmessageAop;// Application.java
-import com.example.design.aop.simple.TestService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-public class Application {
+public class LocalMessageAopApplication {
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(LocalMessageAopApplication.class, args);
 
         TestLocalTaskMessageService service = context.getBean(TestLocalTaskMessageService.class);
 

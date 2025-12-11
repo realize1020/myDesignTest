@@ -1,0 +1,38 @@
+#spring:
+#  application:
+#    name: aitos-eam-service-wyn
+#  cloud:
+#    nacos: #nacos监控
+#      discovery:
+#        #server-addr: 192.168.11.111:8848
+#        server-addr: 10.81.0.103:8848
+#        namespace: 3be723d2-bd5d-497e-a13a-5aa4275e4331
+#        #namespace: dev
+#        #namespace: a1d7a39a-b5e5-44b3-a428-d0d9af8eae57
+#        ip: 10.1.13.73
+#      config:
+#        server-addr: 10.81.0.103:8848
+#        #namespace: 3be723d2-bd5d-497e-a13a-5aa4275e4331
+#        #namespace: a1d7a39a-b5e5-44b3-a428-d0d9af8eae57
+#        namespace: b77dc079-5bf0-46cf-8862-b04e39c16d47
+#        ip: 10.1.13.73
+#        file-extension: yml # 指定格式 aitos-demo-service-dev.yml
+#        extension-configs:
+#          - data-id: global-config.yml  #导入全局配置
+#            refresh: true
+#          - data-id: mybatis-plus-config.yml #导入mybatisplus 配置
+#            refresh: true
+#          - data-id: redis-config.yml  #导入redis配置
+#            refresh: true
+#          - data-id: sa-token-client-config.yml #导入sa-token配置
+#            refresh: true
+#          - data-id: datasource-config.yml #数据源配置
+#            refresh: true
+#          - data-id: seata-config.yml #数据源配置
+#            refresh: true
+#          - data-id: feigh-config #导入feign配置
+#            refresh: true
+#          - data-id: eam-config.yaml #导入eam配置
+#            refresh: true
+#          - data-id: datasource-config-doris.yml #导入feign配置
+#            refresh: true

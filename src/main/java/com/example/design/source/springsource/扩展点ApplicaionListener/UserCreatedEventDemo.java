@@ -1,5 +1,8 @@
 package com.example.design.source.springsource.扩展点ApplicaionListener;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -252,11 +255,9 @@ class CacheService implements ApplicationListener<UserCreatedEvent> {
  * Spring 配置类
  */
 @Configuration
-class EventConfig {
-    
+class EventConfig{
     @Bean
-    public org.springframework.context.ApplicationEventPublisher applicationEventPublisher(
-            AnnotationConfigApplicationContext context) {
-        return context;
+    public AnnotationConfigApplicationContext annotationConfigApplicationContext() {
+        return new AnnotationConfigApplicationContext();
     }
 }

@@ -133,6 +133,19 @@
             <artifactId>jol-core</artifactId>
             <version>0.17</version>
         </dependency>
+<!--        &lt;!&ndash; Nacos Config 依赖 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
+<!--            <version>2.2.5.RELEASE</version> &lt;!&ndash; 版本可根据实际 Spring Cloud 版本调整 &ndash;&gt;-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; Nacos Discovery 依赖 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
+<!--            <version>2.2.5.RELEASE</version> &lt;!&ndash; 版本可根据实际 Spring Cloud 版本调整 &ndash;&gt;-->
+<!--        </dependency>-->
     </dependencies>
 
 
