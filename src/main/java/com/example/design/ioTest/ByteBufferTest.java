@@ -48,11 +48,11 @@ public class ByteBufferTest {
         // 写入数据
         buffer.putInt(123);
         buffer.putShort((short) 456);
-        // 此时：position=6, limit=1024, capacity=1024
+        // 此时：position=6, rateLimit=1024, capacity=1024
 
         // 不 flip() 直接读取
         byte[] data1 = new byte[10];
-        buffer.get(data1);  // 从 position=6 开始读取，读到 limit=1024
+        buffer.get(data1);  // 从 position=6 开始读取，读到 rateLimit=1024
         // 结果：读取了 1018 字节的垃圾数据
         int intValue = buffer.getInt();
         short shortValue = buffer.getShort();
@@ -60,7 +60,7 @@ public class ByteBufferTest {
         System.out.println("short值: " + shortValue);
 
         // 重置后 flip() 再读取
-        buffer.flip();  // position=0, limit=6
+        buffer.flip();  // position=0, rateLimit=6
         // 按原始类型读取
         int intValue2 = buffer.getInt();
         short shortValue2 = buffer.getShort();
@@ -75,7 +75,7 @@ public class ByteBufferTest {
             buffer.put((byte)i);
         }
         //现在我们对这个缓冲区 分片，以创建一个包含槽 3 到槽 6 的子缓冲区。在某种意义上，子缓冲区就像原来的缓冲区中的一个 窗口 。
-        //窗口的起始和结束位置通过设置 position 和 limit 值来指定，然后调用 Buffer 的 slice() 方法：
+        //窗口的起始和结束位置通过设置 position 和 rateLimit 值来指定，然后调用 Buffer 的 slice() 方法：
         //片 是缓冲区的 子缓冲区 。不过，片段 和 缓冲区 共享同一个底层数据数组。
         buffer.position(3);
         buffer.limit(7);

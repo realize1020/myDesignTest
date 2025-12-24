@@ -94,7 +94,7 @@ public class DirectBufferPool {
             // Get from corresponding pool
             ByteBuffer buffer = pools[poolIndex].poll();
             if (buffer != null) {
-                buffer.clear(); // Reset position and limit
+                buffer.clear(); // Reset position and rateLimit
                 poolHits.incrementAndGet();
                 logger.debug("Got DirectBuffer from pool: size={}, poolIndex={}", sizes[poolIndex], poolIndex);
                 return buffer;

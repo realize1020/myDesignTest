@@ -1,0 +1,6 @@
+rate:
+  limit:
+    enabled: true
+    default-algorithm: token_bucket
+    statistics-enabled: true
+    statistics-retention-minutes: 60
